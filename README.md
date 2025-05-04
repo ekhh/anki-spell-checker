@@ -27,7 +27,7 @@
 
 This add-on relies on dictionary files for checking spelling mistakes. As such, it is able to download those files for some common languages.
 
-1. Navigate to `Tools` > `Add-ons` and click the `Spell Checker` entry twice.
+1. Navigate to `Tools` > `Add-ons` and click the `Anki Spell Checker` entry twice.
 2. Select your preferred language(s) from the list and click the `Enable` button.
 3. If the selected item turns green, the dictionary has been downloaded.
 
