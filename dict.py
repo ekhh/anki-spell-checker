@@ -9,14 +9,6 @@ QCOLOR_GREEN = QColor(0, 255, 0, 50)
 
 
 class DictionaryManager:
-    def __init__(self):
-        self.setupMenu()
-
-    def setupMenu(self):
-        a = QAction("Dictionary Configuration", mw)
-        a.triggered.connect(self.showConfig)
-        mw.form.menuTools.addAction(a)
-
     def showConfig(self):
         DictionaryDialog()
         refreshLanguages()
@@ -36,7 +28,7 @@ class DictionaryDialog(QDialog):
         self.exec()
 
     def _setupDialog(self):
-        self.setWindowTitle("Spell checker configuration")
+        self.setWindowTitle("Spell Checker Configuration")
         self.setWindowModality(Qt.WindowModality.WindowModal)
         self.resize(350, 300)
 
@@ -53,7 +45,7 @@ class DictionaryDialog(QDialog):
 
         l1 = QLabel("Enabled")
         l1.setStyleSheet(f"background-color:rgba{QCOLOR_GREEN.getRgb()}")
-        l2 = QLabel("Missing/downloading")
+        l2 = QLabel("Missing/Downloading")
         l2.setStyleSheet(f"background-color:rgba{QCOLOR_ORANGE.getRgb()}")
         l3 = QLabel("Disabled")
 
@@ -61,13 +53,13 @@ class DictionaryDialog(QDialog):
         line.setFrameShape(QFrame.Shape.HLine)
         line.setFrameShadow(QFrame.Shadow.Sunken)
 
-        comp_btn = QPushButton("Compile your\ndictionaries")
+        comp_btn = QPushButton("Compile")
         comp_btn.clicked.connect(compileUserDictionaries)
 
-        open_pdics_btn = QPushButton("Open personal\ndictionary folder")
+        open_pdics_btn = QPushButton("Excluded Words")
         open_pdics_btn.clicked.connect((partial(openPath, USER_DICT_PATH)))
 
-        open_dics_btn = QPushButton("Open .bdic folder")
+        open_dics_btn = QPushButton("All Dictionaries")
         open_dics_btn.clicked.connect((partial(openPath, DICT_DIR)))
 
         control_box = QVBoxLayout()

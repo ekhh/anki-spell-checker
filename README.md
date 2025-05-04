@@ -1,66 +1,76 @@
-<h1 align="center">[DEPRECATED] Spell Checker for Anki</h1>
+<br>
+<div align="center">
+    <img src="icon.svg" width="80" height="80">
+    <h3>Anki Spell Checker</h3>
+    <p>A simple add-on to check for spelling mistakes when you are editing your cards.</p>
+    <a href="./releases/download/v1.0.0/anki-spell-checker_v1-0-0.ankiaddon">
+    <strong>Download »</strong>
+    </a>
+    <br>
+</div>
 
-**This is no longer supported, please consider using (https://ankiweb.net/shared/info/143753963) instead.**
+### Features
 
-### Legacy Documentation
-  
-Welcome to Spell Checker for Anki! This add-on enhances your Anki flashcard experience by ensuring your entries are error-free. The spell-checker identifies and lets you correct spelling mistakes in multiple languages, seamlessly integrating into the Anki interface. You can add your own words via the integrated personal dictionary.
+- Supports multiple languages.
+- Supports customized dictionaries.
+- Minimalistic design; no flashy things.
 
 ### Installation
 
-#### AnkiWeb
-
-The easiest way to install Spell Checker is through [AnkiWeb](https://ankiweb.net/shared/info/369581638).
-
-#### Manual installation
-
-1. Download the latest `.ankiaddon` file from the [releases tab](https://github.com/ValentinSchmitz/spell-checker/releases).
-2. Open the folder where your downloads are located and double-click on the downloaded `.ankiaddon` file.
-3. Follow the installation prompt and restart Anki if it asks you to.
+1. Click the downloaded `.ankiaddon` file twice.
+2. Follow the installation prompt; restart Anki if it asks you to.
+3. Read the sections below to configure the add-on.
 
 ### Setup
 
 #### Basic
 
-The Add-on is able to download dictionary files for all main languages. To activate your language:
+This add-on relies on dictionary files for checking spelling mistakes. As such, it is able to download those files for some common languages.
 
-1. On the main page, go to *Tools > Dictionary configuration.*
-2. Choose your desired language(s) from the list and click *Enable*.
-3. Once the list items turn green, the language is successfully downloaded.
+1. Navigate to `Tools` > `Add-ons` and click the `Spell Checker` entry twice.
+2. Select your preferred language(s) from the list and click the `Enable` button.
+3. If the selected item turns green, the dictionary has been downloaded.
 
-You can disable languages by selecting them and clicking *Disable*.
+You may disable the spell checker for certain dictionaries by clicking the `Disable` button after you have selected them.
 
-#### Custom dictionaries
+> [!TIP]
+> To exclude a word from the spell checker permanently, select the *Add to dictionary* option in the context menu.
 
-You can simply right-click on words and then choose *Add to dictionary*, to save custom words. If you have a more extensive word list, you can integrate them in the following ways:
+#### Advanced
 
-##### `.txt` files
+You may incorporate your own dictionary in the following ways:
 
-You should have a `.txt` file, which consists of one word per line.
+**`.txt` or `.dic` file**
 
-1.  On the main page, go to *Tools > Dictionary configuration.*
-2. Start by clicking on *Open Personal Dictionary Folder*. Once the specific folder opens, please transfer the `.txt` file into this folder.
-3. Go back to the *Dictionary configuration* screen and click the button *Compile your dictionaries.*
-4. Your dictionary should appear in the list. You may have to reopen the configuration window. 
+> [!NOTE]
+> `.txt` files must consist of one word per line. A `.aff` file is optional; if you do not supply one, no additional rules will be used.
 
-##### `.dic` files
+1. Navigate to `Tools` > `Add-ons` and click the `Spell Checker` entry twice.
+2. Click on the `Excluded Words` button; a folder should open.
+3. Place your file in the said folder and return to the configuration window.
+4. Click on the `Compile` button and reopen the configuration window.
 
-If you have a `.dic` file with the accompanying `.aff` file, you can proceed the same way as described for the .txt files. If you do not supply a .aff file, a clear one with no additional rules is created.
+Your dictionary should now be listed.
 
-##### `.bdic` files
+**`.bdic` files**
 
 If you have a precompiled `.bdic` file, proceed as follows:
 
-1.  On the main page, go to *Tools > Dictionary configuration.*
-2. Start by clicking on *Open .bdic folder.* Once the specific folder opens, please transfer the .bdic file into this folder.
-3. Your dictionary should appear in the list. You may have to reopen the configuration window. 
+1. Navigate to `Tools` > `Add-ons` and click the `Spell Checker` entry twice.
+2. Click on the `All Dictionaries` button; a folder should open.
+3. Place your `.bdic` file in the folder and reopen the configuration window.
 
-### License and Credits
+Your dictionary should now be listed.
 
-This project is based on the legacy plugin [Spelling Police](<https://github.com/lovac42/SpellingPolice>) by [lovac42](<https://github.com/lovac42>).
+### Acknowledgement
 
-The binaries for the .bidc conversion are downloaded from jankelmen's project [convert-dict-tool-from-chromium](<https://github.com/jankelemen/convert-dict-tool-from-chromium>).
+I do not take any credit for anything in this repository; most of it is not my work.
 
-The dictionaries are provided by [dictionaries](<https://github.com/wooorm/dictionaries>) from wooorm. See their repository for specific licenses. You can also report errors in the dictionaries there.
-
-The plugin icon is created by  <a href="<https://github.com/carbon-design-system/carbon?ref=svgrepo.com>" target="\_blank">Carbon Design</a> in Apache License via <a href="<https://www.svgrepo.com/>" target="\_blank">SVG Repo</a>.
+- This project is a derivative of [Valentin](https://github.com/ValentinSchmitz)'s [Spell Checker](https://github.com/ValentinSchmitz/spell-checker), which was based on the [Spelling Police](https://github.com/lovac42/SpellingPolice) add-on by [lovac42](https://github.com/lovac42).
+- Internally, the `convert_dict` tool converts all dictionaries used for checking spelling mistakes.
+  - On Linux distributions, the [binaries](https://github.com/jankelemen/convert-dict-tool-from-chromium) for this tool are provided by [Jan Kelemen](https://github.com/jankelemen).
+  - On Windows, the [binaries](https://github.com/jmbeach/convert_dict_windows) for this tool are provided by [Jared Beach](https://github.com/jmbeach).
+- The actual dictionaries are downloaded from [Titus Wormer](https://github.com/wooorm)'s [repository](https://github.com/wooorm/dictionaries) under [various licenses](https://github.com/wooorm/dictionaries#list-of-dictionaries).
+- The `addToDictionary` and `compileBDIC` functions were patched by [Shigeyuki](https://github.com/shigeyukey) as part of the [Anki Spell Checker](https://ankiweb.net/shared/info/143753963) add-on.
+- All of the aforementioned projects are made available under the [GNU General Public License, Version 3](https://opensource.org/license/gpl-3-0).
+- The icon for the add-on was created as a part of the [Carbon Design System](https://github.com/carbon-design-system/carbon), which is made available under the [Apache License, Version 2.0](https://opensource.org/license/apache-2-0).

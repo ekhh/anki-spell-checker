@@ -11,14 +11,25 @@ from .const import *
 
 dictMan = DictionaryManager()
 
-
 def addToDictionary(word):
-    saveWrite(PERSONAL_PATH, f"{word}\n", "a+")
-    compilePersonal()
+    # From https://ankiweb.net/shared/info/369581638.
+    added = saveWriteUnique(PERSONAL_PATH, f"{word}\n", "a+")
+    if added:
+        page = mw.web.page()
 
+        page.profile().setSpellCheckEnabled(False)
+        page.profile().setSpellCheckLanguages({})
+
+        compilePersonal()
+
+        page.profile().setSpellCheckLanguages(getDictionaries())
+        page.profile().setSpellCheckEnabled(getUserData("status", default=True))
+
+    else:
+        tooltip("The selected word already exists in the dictionary.")
 
 def onContextMenuEvent(editor_webview: editor.EditorWebView, menu: QMenu):
-    page = editor_webview._page
+    page = editor_webview.page()
 
     base_action = menu.actions()[0]
 
@@ -45,7 +56,7 @@ def onContextMenuEvent(editor_webview: editor.EditorWebView, menu: QMenu):
 
 
 def setupBDIC(editor_webview: editor.EditorWebView):
-    page = editor_webview._page
+    page = editor_webview.page()
     profile: QWebEngineProfile = page.profile()
     profile.setSpellCheckEnabled(getUserData("status", default=True))
     profile.setSpellCheckLanguages(getDictionaries())
@@ -57,7 +68,7 @@ def on_setup_editor_buttons(buttons, edi: editor.Editor):
     def toggleSpellChecker(edit: editor.Editor):
         new = not getUserData("status", default=False)
         setUserData("status", new)
-        mw.web._page.profile().setSpellCheckEnabled(new)
+        mw.web.page().profile().setSpellCheckEnabled(new)
 
     b = edi.addButton(
         icon,

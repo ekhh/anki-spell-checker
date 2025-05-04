@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from aqt.utils import showWarning
 from aqt import mw
 import os
@@ -6,7 +5,10 @@ import os
 BASE_URL_DICTIONARIES = "https://api.github.com/repos/wooorm/dictionaries/contents"
 URL_BINARIES = "https://github.com/jankelemen/convert-dict-tool-from-chromium/archive/refs/heads/master.zip"\
     if os.name != 'nt' else 'https://github.com/jmbeach/convert_dict_windows/archive/refs/heads/main.zip'
-VERSION_DICTIONARIES = "2a5353f1617f00e606dc036cab1c37df94272ca0"
+
+# Always fetch ref from the main branch.
+VERSION_DICTIONARIES = "main"
+
 URL_DICTIONARIES = lambda path: f"{BASE_URL_DICTIONARIES}/{path}?ref={VERSION_DICTIONARIES}"
 
 DICT_DIR = os.path.join(mw.pm.base, "dictionaries")

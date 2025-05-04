@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from functools import partial, wraps
 from aqt.operations import QueryOp
 from aqt.utils import showWarning
@@ -16,7 +15,7 @@ from .const import *
 
 
 def refreshLanguages(*args):
-    p = mw.web._page.profile()
+    p = mw.web.page().profile()
     p.setSpellCheckEnabled(False)
     p.setSpellCheckLanguages({})
     p.setSpellCheckLanguages(getDictionaries())
@@ -91,7 +90,7 @@ def compileUserDictionary(name, *args):
         os.remove(f)
 
 
-@background_op(with_progress=True, label="Spell checker:\nDownloading binaries for .bdic conversion...")
+@background_op(with_progress=False, label="Spell checker:\nDownloading binaries for dictionary conversion...")
 def checkConversionBinaries(*args):
     done_file = os.path.join(BINS_PATH, "verified")
     if not os.path.isfile(done_file):
@@ -119,11 +118,34 @@ def compileBDIC(path, name, remove=False):
         for e in ex:
             os.remove(os.path.join(path, name + e))
     print(f"Compiled {name}")
+
     if res.returncode != 0:
         aqt.mw.taskman.run_on_main(
-            lambda: showWarning(f"Dictionary {name} seems to be broken. Process output:\n{res.stdout}"))
+            lambda: showWarning(f"The requested dictionary ({name}) seems to be broken. Process output:\n{res.stdout}"))
     else:
         os.rename(os.path.join(path, name + ".bdic"), os.path.join(DICT_DIR, name + ".bdic"))
+
+    if res.returncode != 0:
+        aqt.mw.taskman.run_on_main(
+            lambda: tooltip(f"The requested dictionary ({name}) seems to be broken. Process output:\n{res.stdout}"))
+    else:
+        try:
+            with open(os.path.join(path, name + ".bdic"), 'rb') as read_file, open(os.path.join(DICT_DIR, name + ".bdic"), 'wb') as write_file:
+                write_file.write(read_file.read())
+            print(f"Copied {name} to {DICT_DIR} successfully")
+            aqt.mw.taskman.run_on_main(
+                lambda: tooltip(f"The requested dictionary ({name}) has been downloaded. Please restart Anki to apply changes."))
+        except OSError as e:
+            print(e)
+            if name == "personal":
+                config = mw.addonManager.getConfig(__name__)
+                config["compile_is_needed"] = True
+                mw.addonManager.writeConfig(__name__, config)
+                aqt.mw.taskman.run_on_main(
+                    lambda: tooltip(f"The requested dictionary ({name}) has been downloaded. Please restart Anki to apply changes."))
+            else:
+                aqt.mw.taskman.run_on_main(
+                    lambda: tooltip(f"Error: The requested dictionary ({name}) could not be downloaded."))
 
 
 def download(url):
@@ -131,11 +153,10 @@ def download(url):
         res = req.get(url)
     except ConnectionError as error:
         showWarning(
-            "Internet connection failed. Files could not be downloaded. Please ensure you have an "
-            f"internet connection and reopen Anki. Error: {error}")
+            "An internet connection is not available. Error: {error}")
         return None
     if res.status_code != 200:
-        showWarning(f"Access to {url} failed. Status code: {res.status_code}. Please try again later.")
+        showWarning(f"Access to {url} has failed. Status code: {res.status_code}.")
     return res
 
 
@@ -161,7 +182,7 @@ def setUserData(name, data):
             pck = pickle.dumps(data)
             f.write(pck)
     except IOError as err:
-        showWarning(f"Could not write user files, check permissions. Error: {err}")
+        showWarning(f"Could not write to user_files. Error: {err}")
 
 
 def getUserData(name, default=None):
@@ -175,7 +196,7 @@ def getUserData(name, default=None):
             pck = f.read()
             return pickle.loads(pck)
     except IOError as err:
-        showWarning(f"Could not read user files, check permissions. Error: {err}")
+        showWarning(f"Could not read user_files. Error: {err}")
         return default
 
 
@@ -183,7 +204,7 @@ def saveMkdir(path):
     try:
         os.makedirs(path, exist_ok=True)
     except OSError as error:
-        showWarning(f"Can't create data folder, check permissions. Error: {error}")
+        showWarning(f"Could not create the data directory. Error: {error}")
 
 
 def saveWrite(path, content, mode="w+b"):
