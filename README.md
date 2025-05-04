@@ -3,7 +3,7 @@
     <img src="icon.svg" width="80" height="80">
     <h3>Anki Spell Checker</h3>
     <p>A simple add-on to check for spelling mistakes when you are editing your cards.</p>
-    <a href="https://github.com/EKHH/anki-spell-checker/releases/download/v1.0.0/anki-spell-check.ankiaddon">
+    <a href="https://github.com/EKHH/anki-spell-checker/releases/download/v1.0.2/anki-spell-check.ankiaddon">
     <strong>Download »</strong>
     </a>
     <br>
