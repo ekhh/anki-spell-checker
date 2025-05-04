@@ -1,6 +1,7 @@
 from functools import partial, wraps
 from aqt.operations import QueryOp
 from aqt.utils import showWarning
+from aqt.utils import showInfo
 from datetime import date
 import requests as req
 from aqt import mw
@@ -127,14 +128,14 @@ def compileBDIC(path, name, remove=False):
 
     if res.returncode != 0:
         aqt.mw.taskman.run_on_main(
-            lambda: tooltip(f"The requested dictionary ({name}) seems to be broken. Process output:\n{res.stdout}"))
+            lambda: showWarning(f"The requested dictionary ({name}) seems to be broken. Process output:\n{res.stdout}"))
     else:
         try:
             with open(os.path.join(path, name + ".bdic"), 'rb') as read_file, open(os.path.join(DICT_DIR, name + ".bdic"), 'wb') as write_file:
                 write_file.write(read_file.read())
             print(f"Copied {name} to {DICT_DIR} successfully")
             aqt.mw.taskman.run_on_main(
-                lambda: tooltip(f"The requested dictionary ({name}) has been downloaded. Please restart Anki to apply changes."))
+                lambda: showInfo(f"The requested dictionary ({name}) has been downloaded. Please restart Anki to apply changes."))
         except OSError as e:
             print(e)
             if name == "personal":
@@ -142,10 +143,10 @@ def compileBDIC(path, name, remove=False):
                 config["compile_is_needed"] = True
                 mw.addonManager.writeConfig(__name__, config)
                 aqt.mw.taskman.run_on_main(
-                    lambda: tooltip(f"The requested dictionary ({name}) has been downloaded. Please restart Anki to apply changes."))
+                    lambda: showInfo(f"The requested dictionary ({name}) has been downloaded. Please restart Anki to apply changes."))
             else:
                 aqt.mw.taskman.run_on_main(
-                    lambda: tooltip(f"Error: The requested dictionary ({name}) could not be downloaded."))
+                    lambda: showWarning(f"Error: The requested dictionary ({name}) could not be downloaded."))
 
 
 def download(url):
