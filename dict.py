@@ -45,7 +45,7 @@ class DictionaryDialog(QDialog):
 
         l1 = QLabel("Enabled")
         l1.setStyleSheet(f"background-color:rgba{QCOLOR_GREEN.getRgb()}")
-        l2 = QLabel("Missing/Downloading")
+        l2 = QLabel("Downloading")
         l2.setStyleSheet(f"background-color:rgba{QCOLOR_ORANGE.getRgb()}")
         l3 = QLabel("Disabled")
 
@@ -175,8 +175,27 @@ class DictionaryDialog(QDialog):
         self._update()
 
     def _toggle(self):
+        self._enabled = getUserData("enabled", {})
+
         fn = self.list.currentItem().data(Qt.ItemDataRole.UserRole)
-        if fn is not None:
-            self._enabled[fn] = not self._enabled[fn]
+        cu = self.list.currentItem().data(Qt.ItemDataRole.WhatsThisRole)
+
+        if fn is None:
+            return
+
+        current_state = self._enabled.get(fn, True)
+        if current_state:
+            self._enabled[fn] = False
+            file_path = os.path.join(DICT_DIR, fn + ".bdic")
+            if cu:
+                os.remove(file_path)
+            if os.path.isfile(file_path):
+                os.rename(file_path, file_path + ".disabled")
+        else:
+            self._enabled[fn] = True
+            file_path = os.path.join(DICT_DIR, fn + ".bdic.disabled")
+            if os.path.isfile(file_path):
+                os.rename(file_path, os.path.join(DICT_DIR, fn + ".bdic"))
+
         setUserData("enabled", self._enabled)
         self._update()

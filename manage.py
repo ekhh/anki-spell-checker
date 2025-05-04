@@ -1,7 +1,6 @@
 from functools import partial, wraps
 from aqt.operations import QueryOp
 from aqt.utils import showWarning
-from aqt.utils import showInfo
 from datetime import date
 import requests as req
 from aqt import mw
@@ -128,14 +127,10 @@ def compileBDIC(path, name, remove=False):
     else:
         try:
             shutil.move(os.path.join(path, name + ".bdic"), os.path.join(DICT_DIR, name + ".bdic"))
-            aqt.mw.taskman.run_on_main(
-                lambda: showInfo(f"The requested dictionary ({name}) has been enabled."))
         except OSError as e:
             print(e)
             if name == "personal":
                 compilePersonal()
-                aqt.mw.taskman.run_on_main(
-                    lambda: showInfo(f"The requested dictionary ({name}) has been enabled."))
             else:
                 aqt.mw.taskman.run_on_main(
                     lambda: showWarning(f"Error: The requested dictionary ({name}) could not be compiled."))

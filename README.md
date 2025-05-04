@@ -48,7 +48,7 @@ You may incorporate your own dictionary in the following ways:
 > [!NOTE]
 > `.txt` files must consist of one word per line. A `.aff` file is optional; if you do not supply one, no additional rules will be used.
 
-1. Navigate to `Tools` > `Add-ons` and click the `Spell Checker` entry twice.
+1. Navigate to `Tools` > `Add-ons` and double-click the `Spell Checker` entry.
 2. Click on the `Excluded Words` button; a folder should open.
 3. Place your file in the said folder and return to the configuration window.
 4. Click on the `Compile` button and reopen the configuration window.
