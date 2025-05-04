@@ -56,7 +56,7 @@ class DictionaryDialog(QDialog):
         comp_btn = QPushButton("Compile")
         comp_btn.clicked.connect(compileUserDictionaries)
 
-        open_pdics_btn = QPushButton("Excluded Words")
+        open_pdics_btn = QPushButton("Ignored Words")
         open_pdics_btn.clicked.connect((partial(openPath, USER_DICT_PATH)))
 
         open_dics_btn = QPushButton("All Dictionaries")

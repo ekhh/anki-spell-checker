@@ -34,10 +34,10 @@ This add-on relies on dictionary files for checking spelling mistakes. As such, 
 2. Select your preferred languages from the list and click on the `Enable` button.
 3. If the selected items turn green, the dictionaries were processed successfully.
 
-You may disable the spell checker for certain dictionaries by clicking the `Disable` button after you have selected them.
+To exclude a word from being checked, select the `Ignore` option in the context menu. You may also disable the spell checker for certain dictionaries by clicking the `Disable` button after you have selected them.
 
 > [!TIP]
-> To exclude a word from the spell checker permanently, select the *Add to dictionary* option in the context menu.
+> To remove a word that you have previously ignored, navigate to `Tools` > `Add-ons` > `Anki Spell Checker` > `Config` > `Ignored Words` and remove it from `personal.txt`. You must `Compile` the changes and restart Anki to apply the configuration.
 
 #### Advanced
 
@@ -49,7 +49,7 @@ You may incorporate your own dictionary in the following ways:
 > `.txt` files must consist of one word per line. A `.aff` file is optional; if you do not supply one, no additional rules will be used.
 
 1. Navigate to `Tools` > `Add-ons` > `Anki Spell Checker` > `Config`.
-2. Click on the `Excluded Words` button; a folder should open.
+2. Click on the `Ignored Words` button; a folder should open.
 3. Place your file(s) therein and return to the configuration window.
 4. Click on the `Compile` button and reopen the window.
 
