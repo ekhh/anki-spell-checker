@@ -3,7 +3,7 @@
     <img src="icon.svg" width="80" height="80">
     <h3>Anki Spell Checker</h3>
     <p>A simple add-on to check for spelling mistakes when you are editing your cards.</p>
-    <a href="./releases/download/v1.0.0/anki-spell-checker_v1-0-0.ankiaddon">
+    <a href="./releases/download/v1.0.0/anki-spell-check.ankiaddon">
     <strong>Download »</strong>
     </a>
     <br>
@@ -12,7 +12,7 @@
 ### Features
 
 > [!IMPORTANT]
-> This add-on currently only works on Windows and Linux; macOS is not yet supported.
+> This add-on only works on Windows and Linux; macOS is not yet supported.
 
 - Supports multiple languages.
 - Supports customized dictionaries.
@@ -20,7 +20,7 @@
 
 ### Installation
 
-1. Click the downloaded `.ankiaddon` file twice.
+1. Double-click the downloaded `.ankiaddon` file.
 2. Follow the installation prompt; restart Anki if it asks you to.
 3. Read the sections below to configure the add-on.
 
