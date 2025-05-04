@@ -74,6 +74,6 @@ I do not take any credit for anything in this repository; most of it is not my w
   - On Linux distributions, the [binaries](https://github.com/jankelemen/convert-dict-tool-from-chromium) for this tool are provided by [Jan Kelemen](https://github.com/jankelemen).
   - On Windows, the [binaries](https://github.com/jmbeach/convert_dict_windows) for this tool are provided by [Jared Beach](https://github.com/jmbeach).
 - The actual dictionaries are downloaded from [Titus Wormer](https://github.com/wooorm)'s [repository](https://github.com/wooorm/dictionaries) under [various licenses](https://github.com/wooorm/dictionaries#list-of-dictionaries).
-- The `addToDictionary`, `compileBDIC`, and `needCompileAnkiStartUp` functions were created by [Shigeyuki](https://github.com/shigeyukey) as part of the [Anki Spell Checker](https://ankiweb.net/shared/info/143753963) add-on.
+- The `addToDictionary`, `compileBDIC`, and `saveWriteUnique` functions were created by [Shigeyuki](https://github.com/shigeyukey) as part of the [Anki Spell Checker](https://ankiweb.net/shared/info/143753963) add-on.
 - All of the aforementioned projects are made available under the [GNU General Public License, Version 3](https://opensource.org/license/gpl-3-0).
 - The icon for the add-on was created as a part of the [Carbon Design System](https://github.com/carbon-design-system/carbon), which is made available under the [Apache License, Version 2.0](https://opensource.org/license/apache-2-0).

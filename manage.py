@@ -68,7 +68,7 @@ def compileUserDictionary(name, *args):
     base = os.path.join(USER_DICT_PATH, name)
     tmp_files = []
     if os.path.isfile(base + ".txt"):
-        with open(base + ".txt", "rbU") as f:
+        with open(base + ".txt", "rb") as f:
             line_count = sum(1 for _ in f)
         with open(base + ".txt", 'r') as in_file, open(base + ".dic", 'w') as out_file:
             out_file.write(str(line_count) + "\nWeirdBugFix\n")
@@ -206,3 +206,24 @@ def saveWrite(path, content, mode="w+b"):
             f.write(content)
     except IOError as error:
         showWarning(f"Could not write content to disk. Error: {error}")
+
+def saveWriteUnique(path, content:str, mode="a+"):
+    try:
+        if not os.path.exists(path):
+            with open(path, "w") as f:
+                f.write("")
+
+        with open(path, "r") as f:
+            existing_lines = set(line.strip() for line in f.readlines())
+
+        new_content = content.strip()
+        if new_content in existing_lines:
+            return False
+
+        with open(path, mode) as f:
+            f.write(content)
+        return True
+
+    except Exception as error:
+        showWarning(f"Could not write content to disk. Error: {error}")
+        return False

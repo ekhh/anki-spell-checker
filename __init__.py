@@ -3,6 +3,7 @@ from aqt import editor, QMenu
 from functools import partial
 from aqt import gui_hooks
 from aqt.qt import *
+from aqt.utils import showInfo
 
 from .dict import DictionaryManager, getDictionaries
 from .manage import *
@@ -22,7 +23,7 @@ def addToDictionary(word):
         page.profile().setSpellCheckEnabled(getUserData("status", default=True))
 
     else:
-        tooltip("The selected word already exists in the dictionary.")
+        showInfo("The selected word already exists in the dictionary.")
 
 def onContextMenuEvent(editor_webview: editor.EditorWebView, menu: QMenu):
     page = editor_webview.page()
