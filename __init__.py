@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
-from aqt import editor, QMenu
 from functools import partial
-from aqt import gui_hooks
+from aqt import editor, QMenu, gui_hooks
 from aqt.qt import *
-from aqt.utils import showInfo
-from aqt.utils import tooltip
-
+from aqt.utils import showInfo, tooltip
 from .dict import DictionaryManager, getDictionaries
 from .manage import *
 from .const import *
@@ -22,9 +19,11 @@ def addToDictionary(word):
         compilePersonal()
         page.profile().setSpellCheckLanguages(getDictionaries())
         page.profile().setSpellCheckEnabled(getUserData("status", default=True))
-        tooltip("Added word to dictionary.")
+        aqt.mw.taskman.run_on_main(
+            lambda: tooltip("Added word to dictionary."))
     else:
-        showInfo("The selected word already exists in your dictionary. You must restart Anki to apply your configuration.")
+        aqt.mw.taskman.run_on_main(
+            lambda: showInfo("The selected word already exists in your dictionary. You must restart Anki to apply your configuration."))
 
 def onContextMenuEvent(editor_webview: editor.EditorWebView, menu: QMenu):
     page = editor_webview.page()

@@ -175,8 +175,6 @@ class DictionaryDialog(QDialog):
         self._update()
 
     def _toggle(self):
-        self._enabled = getUserData("enabled", {})
-
         fn = self.list.currentItem().data(Qt.ItemDataRole.UserRole)
         cu = self.list.currentItem().data(Qt.ItemDataRole.WhatsThisRole)
 

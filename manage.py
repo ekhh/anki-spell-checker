@@ -1,6 +1,6 @@
 from functools import partial, wraps
 from aqt.operations import QueryOp
-from aqt.utils import showWarning
+from aqt.utils import showWarning, tooltip
 from datetime import date
 import requests as req
 from aqt import mw
@@ -56,7 +56,12 @@ def background_op(func=None, /, *, success=None, with_progress= None, label=None
 def compileUserDictionaries(*args, **kwargs):
     for dic in os.listdir(USER_DICT_PATH):
         if dic.endswith((".dic", ".txt")):
-            compileUserDictionary(dic.split(".")[0])
+            if os.stat(os.path.join(USER_DICT_PATH, dic)).st_size > 0:
+                compileUserDictionary(dic.split(".")[0])
+            else:
+                os.remove(os.path.join(USER_DICT_PATH, dic))
+    aqt.mw.taskman.run_on_main(
+        lambda: tooltip("Dictionaries were compiled."))
 
 
 @background_op(success=refreshLanguages)
@@ -140,11 +145,12 @@ def download(url):
     try:
         res = req.get(url)
     except ConnectionError as error:
-        showWarning(
-            "An internet connection is not available. Error: {error}")
+        aqt.mw.taskman.run_on_main(
+            lambda: showWarning("An internet connection is not available. Error: {error}"))
         return None
     if res.status_code != 200:
-        showWarning(f"Access to {url} has failed. Status code: {res.status_code}.")
+        aqt.mw.taskman.run_on_main(
+            lambda: showWarning(f"Access to {url} has failed. Status code: {res.status_code}."))
     return res
 
 
@@ -175,7 +181,8 @@ def setUserData(name, data):
             pck = pickle.dumps(data)
             f.write(pck)
     except IOError as err:
-        showWarning(f"Could not write to user_files. Error: {err}")
+        aqt.mw.taskman.run_on_main(
+            lambda: showWarning(f"Could not write to user_files. Error: {err}"))
 
 
 def getUserData(name, default=None):
@@ -189,7 +196,8 @@ def getUserData(name, default=None):
             pck = f.read()
             return pickle.loads(pck)
     except IOError as err:
-        showWarning(f"Could not read user_files. Error: {err}")
+        aqt.mw.taskman.run_on_main(
+            lambda: showWarning(f"Could not read user_files. Error: {err}"))
         return default
 
 
@@ -197,7 +205,8 @@ def saveMkdir(path):
     try:
         os.makedirs(path, exist_ok=True)
     except OSError as error:
-        showWarning(f"Could not create the data directory. Error: {error}")
+        aqt.mw.taskman.run_on_main(
+            lambda: showWarning(f"Could not create the data directory. Error: {error}"))
 
 
 def saveWrite(path, content, mode="w+b"):
@@ -205,7 +214,8 @@ def saveWrite(path, content, mode="w+b"):
         with open(path, mode) as f:
             f.write(content)
     except IOError as error:
-        showWarning(f"Could not write content to disk. Error: {error}")
+        aqt.mw.taskman.run_on_main(
+            lambda: showWarning(f"Could not write content to disk. Error: {error}"))
 
 def saveWriteUnique(path, content:str, mode="a+"):
     try:
@@ -225,5 +235,6 @@ def saveWriteUnique(path, content:str, mode="a+"):
         return True
 
     except Exception as error:
-        showWarning(f"Could not write content to disk. Error: {error}")
+        aqt.mw.taskman.run_on_main(
+            lambda: showWarning(f"Could not write content to disk. Error: {error}"))
         return False
