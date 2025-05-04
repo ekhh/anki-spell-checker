@@ -25,7 +25,7 @@ try:
     os.makedirs(USER_PATH, exist_ok=True)
     os.makedirs(USER_DICT_PATH, exist_ok=True)
 except OSError as error:
-    showWarning(f"Can't create dictionary folder, check permissions. Error: {error}")
+    showWarning(f"Could not create dictionary folder. Error: {error}")
 
 LANGUAGE_LIST = {'hy': ('Armenian', 'dictionaries/hy'), 'eu': ('Basque', 'dictionaries/eu'),
                  'br': ('Breton', 'dictionaries/br'), 'bg': ('Bulgarian', 'dictionaries/bg'),

@@ -142,7 +142,6 @@ class DictionaryDialog(QDialog):
         for down in downloads:
             save_path = downloadToFile(down, temp_dict, ".".join([key, down.split(".")[-1]]))
             temp_files.append(save_path)
-
         compileBDIC(temp_dict, key, remove=True)
 
     def _enable(self):
@@ -160,7 +159,7 @@ class DictionaryDialog(QDialog):
 
     def _disable(self):
         sel = [i for i in range(self.list.count())
-               if self.list.item(i).isSelected()]
+                if self.list.item(i).isSelected()]
         if sel:
             for i in sel:
                 fn = self.list.item(i).data(Qt.ItemDataRole.UserRole)

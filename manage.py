@@ -5,11 +5,13 @@ from aqt.utils import showInfo
 from datetime import date
 import requests as req
 from aqt import mw
-import webbrowser
 import subprocess
 import zipfile
 import pickle
+import platform
+import shutil
 import os
+import sys
 import aqt
 
 from .const import *
@@ -113,7 +115,7 @@ def compileBDIC(path, name, remove=False):
         mode = os.stat(BIN_PATH).st_mode
         mode |= (mode & 0o444) >> 2  # copy R bits to X
         os.chmod(BIN_PATH, mode)
-    res = subprocess.run(command, shell=True, capture_output=True, text=True)
+    res = subprocess.run(command, shell=False, capture_output=True, text=True)
     if remove:
         ex = [".dic", ".aff"]
         for e in ex:
@@ -122,31 +124,21 @@ def compileBDIC(path, name, remove=False):
 
     if res.returncode != 0:
         aqt.mw.taskman.run_on_main(
-            lambda: showWarning(f"The requested dictionary ({name}) seems to be broken. Process output:\n{res.stdout}"))
-    else:
-        os.rename(os.path.join(path, name + ".bdic"), os.path.join(DICT_DIR, name + ".bdic"))
-
-    if res.returncode != 0:
-        aqt.mw.taskman.run_on_main(
-            lambda: showWarning(f"The requested dictionary ({name}) seems to be broken. Process output:\n{res.stdout}"))
+            lambda: showWarning(f"The requested dictionary ({name}) could not be compiled. Process output:\n{res.stdout}"))
     else:
         try:
-            with open(os.path.join(path, name + ".bdic"), 'rb') as read_file, open(os.path.join(DICT_DIR, name + ".bdic"), 'wb') as write_file:
-                write_file.write(read_file.read())
-            print(f"Copied {name} to {DICT_DIR} successfully")
+            shutil.move(os.path.join(path, name + ".bdic"), os.path.join(DICT_DIR, name + ".bdic"))
             aqt.mw.taskman.run_on_main(
-                lambda: showInfo(f"The requested dictionary ({name}) has been downloaded. Please restart Anki to apply changes."))
+                lambda: showInfo(f"The requested dictionary ({name}) has been enabled."))
         except OSError as e:
             print(e)
             if name == "personal":
-                config = mw.addonManager.getConfig(__name__)
-                config["compile_is_needed"] = True
-                mw.addonManager.writeConfig(__name__, config)
+                compilePersonal()
                 aqt.mw.taskman.run_on_main(
-                    lambda: showInfo(f"The requested dictionary ({name}) has been downloaded. Please restart Anki to apply changes."))
+                    lambda: showInfo(f"The requested dictionary ({name}) has been enabled."))
             else:
                 aqt.mw.taskman.run_on_main(
-                    lambda: showWarning(f"Error: The requested dictionary ({name}) could not be downloaded."))
+                    lambda: showWarning(f"Error: The requested dictionary ({name}) could not be compiled."))
 
 
 def download(url):
@@ -162,7 +154,12 @@ def download(url):
 
 
 def openPath(path):
-    webbrowser.open(f'file://{path}')
+    if platform.system() == "Windows":
+        os.startfile(path)
+    elif platform.system() == "Darwin":
+        subprocess.Popen(["open", path])
+    else:
+        subprocess.Popen(["xdg-open", path])
 
 
 def downloadToFile(url, loc, name):

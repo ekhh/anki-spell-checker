@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from PyQt6.QtWebEngineCore import QWebEngineProfile
 from aqt import editor, QMenu
 from functools import partial
 from aqt import gui_hooks
@@ -16,12 +15,9 @@ def addToDictionary(word):
     added = saveWriteUnique(PERSONAL_PATH, f"{word}\n", "a+")
     if added:
         page = mw.web.page()
-
         page.profile().setSpellCheckEnabled(False)
         page.profile().setSpellCheckLanguages({})
-
         compilePersonal()
-
         page.profile().setSpellCheckLanguages(getDictionaries())
         page.profile().setSpellCheckEnabled(getUserData("status", default=True))
 
