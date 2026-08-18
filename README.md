@@ -1,3 +1,7 @@
+**Deprecated:** Anki Spell Checker grew from my frustration with the release of a bloated variant for a discontinued project. I would like to create a simpler add-on when I have time.
+
+___
+
 <br>
 <div align="center">
     <img src="icon.svg" width="80" height="80">
